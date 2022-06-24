@@ -9,7 +9,7 @@ type Data = {
   owners: string[]
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { address } = req.query
   const contractUrl = `https://eth-mainnet.alchemyapi.io/nft/v2/${process.env.ALCHEMY_API_KEY}/getContractMetadata`
   const ownersUrl = `https://eth-mainnet.alchemyapi.io/nft/v2/${process.env.ALCHEMY_API_KEY}/getOwnersForCollection`
@@ -29,3 +29,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   res.json(json)
 }
+
+export default Address

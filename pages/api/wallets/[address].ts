@@ -56,7 +56,7 @@ type Data = {
   transactions: Transaction[]
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const mainnetProvider = new ethers.providers.JsonRpcProvider(
     process.env.ALCHEMY_API_KEY_MAINNET
   )
@@ -203,3 +203,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   res.json(data)
 }
+
+export default Address

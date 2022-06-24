@@ -123,6 +123,8 @@ export const Nav = () => {
 
     checkClaimed()
     setDarkMode(document.documentElement.classList.contains('dark'))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -198,12 +200,12 @@ export const Nav = () => {
           </ul>
           {isLoggedIn && (
             <>
-              <Link href="/profile">
+              <Link href="/profile" passHref>
                 <button className="flex px-8 py-2 mr-8 transition border border-gray-800 rounded-full dark:border-white hover:bg-white hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                   Edit Profile
                 </button>
               </Link>
-              <Link href={`/wallets/${currentAccount}`}>
+              <Link href={`/wallets/${currentAccount}`} passHref>
                 <button
                   type="button"
                   className="relative inline-flex items-center text-sm font-bold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-5">

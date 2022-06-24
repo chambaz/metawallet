@@ -83,6 +83,8 @@ const Profile: NextPage = () => {
     if (currentAccount) {
       fetchWallet()
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAccount])
 
   return (
@@ -186,16 +188,19 @@ const Profile: NextPage = () => {
                                 id="link"
                                 name="linkKey"
                                 className="block py-2 pl-3 pr-12 text-base text-gray-600 border-gray-300 rounded-md rounded-r-none focus:ring-0 focus:border-gray-300 focus:outline-none bg-gray-50 sm:text-sm">
-                                {availableLinkTypes.map((availableLink) => {
-                                  return (
-                                    <option
-                                      value={availableLink}
-                                      selected={availableLink === item[0]}>
-                                      {availableLink.charAt(0).toUpperCase() +
-                                        availableLink.slice(1)}
-                                    </option>
-                                  )
-                                })}
+                                {availableLinkTypes.map(
+                                  (availableLink, index) => {
+                                    return (
+                                      <option
+                                        key={index}
+                                        value={availableLink}
+                                        selected={availableLink === item[0]}>
+                                        {availableLink.charAt(0).toUpperCase() +
+                                          availableLink.slice(1)}
+                                      </option>
+                                    )
+                                  }
+                                )}
                               </select>
                               <input
                                 type="text"
@@ -228,7 +233,7 @@ const Profile: NextPage = () => {
                               className="block py-2 pl-3 pr-12 text-base text-gray-600 border-gray-300 rounded-md rounded-r-none focus:ring-0 focus:border-gray-300 focus:outline-none bg-gray-50 sm:text-sm">
                               {availableLinkTypes.map((item, index) => {
                                 return (
-                                  <option value={item}>
+                                  <option key={index} value={item}>
                                     {item.charAt(0).toUpperCase() +
                                       item.slice(1)}
                                   </option>

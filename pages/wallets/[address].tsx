@@ -85,6 +85,8 @@ const Wallet = () => {
     ) {
       setCurrentTab(window.location.hash)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query])
 
   return (
@@ -107,9 +109,13 @@ const Wallet = () => {
                         src={wallet.walletData[4]}
                       />
                     )}
-                    {!wallet.walletData || !wallet.walletData.length || !wallet.walletData[4] ? (
+                    {!wallet.walletData ||
+                    !wallet.walletData.length ||
+                    !wallet.walletData[4] ? (
                       <CgProfile className="flex-shrink-0 w-32 h-32 p-4 mx-auto text-white bg-gray-200 rounded-full" />
-                    ) : ''}
+                    ) : (
+                      ''
+                    )}
                   </div>
                   {claimed && (
                     <h1 className="flex items-center mt-6 font-serif text-3xl">
@@ -218,12 +224,14 @@ const Wallet = () => {
                     display: currentTab === '#nfts' ? 'block' : 'none',
                   }}>
                   <div className="grid grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-4">
-                    {wallet?.nfts?.map((nft) => {
+                    {wallet?.nfts?.map((nft, index) => {
                       if (!nft || !nft.img) {
                         return false
                       }
                       return (
-                        <div className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
+                        <div
+                          key={index}
+                          className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
                           <p>Loading...</p>
                           <img
                             className="absolute object-cover w-full h-full"
@@ -239,9 +247,9 @@ const Wallet = () => {
                     display: currentTab === '#tokens' ? 'block' : 'none',
                   }}>
                   <ul className="text-left ">
-                    {wallet?.tokens?.map((token) => {
+                    {wallet?.tokens?.map((token, index) => {
                       return (
-                        <li className="flex items-center py-4">
+                        <li key={index} className="flex items-center py-4">
                           <img
                             src={token.tokenMeta.logo}
                             className="object-contain mr-2"
