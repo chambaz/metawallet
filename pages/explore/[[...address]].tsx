@@ -146,7 +146,7 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
 
   if (query.address) {
     const res = await fetch(
-      `http://localhost:3000/api/contracts/${query.address[0]}`
+      process.env.NEXT_PUBLIC_BASE_URL + `/api/contracts/${query.address[0]}`
     )
     data = await res.json()
   }

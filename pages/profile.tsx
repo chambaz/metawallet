@@ -31,7 +31,7 @@ const Profile: NextPage = () => {
 
   const fetchWallet = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/wallets/${currentAccount}`
+      process.env.NEXT_PUBLIC_BASE_URL + `/${currentAccount}`
     )
     const responseJson = await response.json()
     setWallet(responseJson)

@@ -45,7 +45,7 @@ const Wallet = () => {
 
   const fetchWallet = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/wallets/${query.address}`
+      process.env.NEXT_PUBLIC_BASE_URL + `/api/wallets/${query.address}`
     )
     const responseJson = await response.json()
     setWallet(responseJson)
