@@ -7,7 +7,11 @@ import { ethers } from 'ethers'
 import { Switch } from '@headlessui/react'
 import { CgProfile } from 'react-icons/cg'
 import { MdDarkMode } from 'react-icons/md'
-import { loggedInState, currentAccountState } from '../recoil/atoms'
+import {
+  loggedInState,
+  currentAccountState,
+  claimedState,
+} from '../recoil/atoms'
 import { Truncate } from './truncate'
 import MetaWallet from '../public/artifacts/MetaWallet.json'
 
@@ -15,6 +19,7 @@ export const Nav = () => {
   const router = useRouter()
   const [darkMode, setDarkMode] = useState(true)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
+  const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
   const [currentAccount, setCurrentAccount] =
     useRecoilState(currentAccountState)
 
@@ -25,11 +30,15 @@ export const Nav = () => {
     },
     {
       text: 'About MetaWallet',
-      link: '/#features',
+      link: '/about',
+    },
+    {
+      text: 'For Developers',
+      link: '/developers',
     },
   ]
 
-  const claimWallet = async () => {
+  const login = async () => {
     // connect wallet if not already connected
     const { ethereum } = window
     let accounts
@@ -47,25 +56,6 @@ export const Nav = () => {
       console.log(err)
     }
 
-    // init contract
-    const provider = new ethers.providers.Web3Provider(ethereum)
-    const signer = provider.getSigner()
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS,
-      MetaWallet.abi,
-      signer
-    )
-
-    // check if already claimed
-    const isClaimed = await contract.isClaimedWallet(accounts[0])
-
-    if (!isClaimed) {
-      // make call to claim wallet
-      const claim = await contract.claimWallet({
-        value: ethers.utils.parseEther('0'),
-      })
-    }
-
     // update router to wallet page
     router.push(`/wallets/${accounts[0]}`)
 
@@ -74,7 +64,7 @@ export const Nav = () => {
   }
 
   useEffect(() => {
-    const checkClaimed = async () => {
+    const checkWallet = async () => {
       // check if wallet connected
       const { ethereum } = window
 
@@ -91,6 +81,9 @@ export const Nav = () => {
         const account = accounts[0]
         console.log('Found an account: ', account)
 
+        setCurrentAccount(account)
+        setIsLoggedIn(true)
+
         // init contract
         // TODO: Requires being on correct netework to view
         const provider = new ethers.providers.Web3Provider(ethereum)
@@ -105,8 +98,7 @@ export const Nav = () => {
         const isClaimed = await contract.isClaimedWallet(account)
 
         if (isClaimed) {
-          setCurrentAccount(account)
-          setIsLoggedIn(true)
+          setIsClaimed(true)
         } else {
           if (router.pathname === '/profile') {
             router.push(`/wallets/${account}`)
@@ -121,7 +113,7 @@ export const Nav = () => {
       }
     }
 
-    checkClaimed()
+    checkWallet()
     setDarkMode(document.documentElement.classList.contains('dark'))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,33 +190,35 @@ export const Nav = () => {
               <MdDarkMode className="ml-4" />
             </li>
           </ul>
-          {isLoggedIn && (
-            <>
-              <Link href="/profile" passHref>
-                <button className="flex px-8 py-2 mr-8 transition border border-gray-800 rounded-full dark:border-white hover:bg-white hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Edit Profile
-                </button>
-              </Link>
-              <Link href={`/wallets/${currentAccount}`} passHref>
-                <button
-                  type="button"
-                  className="relative inline-flex items-center text-sm font-bold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-5">
-                  <div className="p-4 bg-gray-800 rounded-l-md bg-opacity-90">
-                    <CgProfile className="text-2xl" />
-                  </div>
-                  <div className="px-6">
-                    <Truncate address={currentAccount} />
-                  </div>
-                </button>
-              </Link>
-            </>
+          {isClaimed && (
+            <Link href="/profile" passHref>
+              <button className="flex px-8 py-2 mr-8 transition border border-gray-800 rounded-full dark:border-white hover:bg-white hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Edit Profile
+              </button>
+            </Link>
           )}
+
+          {isLoggedIn && (
+            <Link href={`/wallets/${currentAccount}`} passHref>
+              <button
+                type="button"
+                className="relative inline-flex items-center text-sm font-bold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-5">
+                <div className="p-4 bg-gray-800 rounded-l-md bg-opacity-90">
+                  <CgProfile className="text-2xl" />
+                </div>
+                <div className="px-6">
+                  <Truncate address={currentAccount} />
+                </div>
+              </button>
+            </Link>
+          )}
+
           {!isLoggedIn && (
             <button
               type="button"
-              onClick={() => claimWallet()}
-              className="relative inline-flex items-center px-6 py-4 ml-auto text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Login or claim your wallet
+              onClick={() => login()}
+              className="relative inline-flex items-center justify-center px-12 py-4 ml-auto text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Log in
             </button>
           )}
         </div>

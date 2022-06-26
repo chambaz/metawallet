@@ -3,8 +3,6 @@ import { Layout } from '../components/layout'
 import { Heading } from '../components/heading'
 import { Search } from '../components/search'
 import { Featured } from '../components/featured'
-import { Features } from '../components/features'
-import { Community } from '../components/community'
 
 const Home: NextPage = () => {
   return (
@@ -23,10 +21,8 @@ const Home: NextPage = () => {
           </Heading>
           <Search className="mt-16" />
         </div>
-        <div className="px-4 mx-auto mb-40 space-y-8 max-w-7xl md:space-y-16">
+        <div className="px-4 mx-auto mb-20 space-y-8 max-w-7xl md:space-y-16">
           <Featured />
-          <Features />
-          <Community />
         </div>
       </>
     </Layout>

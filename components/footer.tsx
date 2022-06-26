@@ -5,7 +5,8 @@ import { FaTwitter, FaDiscord, FaGithub } from 'react-icons/fa'
 const navigation = {
   main: [
     { name: 'Explore wallets', href: '/explore' },
-    { name: 'About MetaWallet', href: '/#features' },
+    { name: 'About MetaWallet', href: '/about' },
+    { name: 'For Developers', href: '/developers' },
   ],
   social: [
     {
