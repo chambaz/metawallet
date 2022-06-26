@@ -11,13 +11,14 @@ import {
   loggedInState,
   currentAccountState,
   claimedState,
+  darkModeState,
 } from '../recoil/atoms'
 import { Truncate } from './truncate'
 import MetaWallet from '../public/artifacts/MetaWallet.json'
 
 export const Nav = () => {
   const router = useRouter()
-  const [darkMode, setDarkMode] = useState(true)
+  const [darkMode, setDarkMode] = useRecoilState(darkModeState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
   const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
   const [currentAccount, setCurrentAccount] =

@@ -24,6 +24,7 @@ import CurrencyFormat from 'react-currency-format'
 import { useQuery } from '../../lib/helpers'
 import { Layout } from '../../components/layout'
 import { Truncate } from '../../components/truncate'
+import { Loader } from '../../components/loader'
 import MetaWallet from '../../public/artifacts/MetaWallet.json'
 
 const Wallet = () => {
@@ -149,7 +150,7 @@ const Wallet = () => {
         style={{ minHeight: 'calc(100vh - 285px)' }}>
         <div className="relative inline-block w-full px-8 pt-8 pb-12 my-8 overflow-hidden text-left text-gray-700 align-bottom transition-all transform -translate-y-40 bg-white rounded-lg shadow-xl max-w-7xl">
           {!wallet.address && (
-            <div className="py-24 text-center">Loading wallet...</div>
+            <Loader label="Loading wallet" className="my-24" />
           )}
           {wallet.address == currentAccount && !isClaimed && (
             <button

@@ -14,3 +14,8 @@ export const currentAccountState = atom({
   key: 'currentAccountState',
   default: null,
 })
+
+export const darkModeState = atom({
+  key: 'darkModeState',
+  default: true,
+})

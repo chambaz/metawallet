@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react'
 import { NextPage } from 'next'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import clsx from 'clsx'
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
 import { CgProfile } from 'react-icons/cg'
+import { darkModeState } from '../../recoil/atoms'
 import { Layout } from '../../components/layout'
 import { Heading } from '../../components/heading'
 import { Search } from '../../components/search'
 import { Truncate } from '../../components/truncate'
+import { Loader } from '../../components/loader'
 
 type ContractMetadataProps = {
   name: string
@@ -27,6 +29,7 @@ const Explore: NextPage<ExploreProps> = ({
   owners,
 }) => {
   const router = useRouter()
+  const [darkMode, setDarkMode] = useRecoilState(darkModeState)
   const [loading, setLoading] = useState(false)
 
   const exploreAddress = (e) => {
@@ -47,12 +50,7 @@ const Explore: NextPage<ExploreProps> = ({
     <Layout>
       <>
         <div className="max-w-5xl px-4 py-16 mx-auto text-center">
-          <div
-            className={clsx(
-              'mb-16 text-center',
-              loading &&
-                'cursor-progress blur-sm pointer-events-none transition'
-            )}>
+          <div className="mb-16 text-center">
             <Heading>Explore Wallets</Heading>
             <p className="my-4 text-lg dark:text-white">
               Explore the holders of an NFT collection.
@@ -63,10 +61,7 @@ const Explore: NextPage<ExploreProps> = ({
               <select
                 id="location"
                 name="location"
-                className={clsx(
-                  'block w-1/2 py-2 pl-3 pr-10 mx-auto mt-8 text-base border-gray-400 rounded-md dark:border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500',
-                  loading && 'cursor-progress'
-                )}
+                className="block w-1/2 py-2 pl-3 pr-10 mx-auto mt-8 text-base border-gray-400 rounded-md dark:border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 defaultValue="#"
                 onChange={exploreAddress}>
                 <option value="#">Top Collections</option>
@@ -101,7 +96,15 @@ const Explore: NextPage<ExploreProps> = ({
               />
             </div>
           </div>
-          {contractMetadata?.name && (
+          {loading && (
+            <Loader
+              color={darkMode ? 'white' : 'blue'}
+              label="Fetching wallets"
+              className="text-gray-700 dark:text-gray-50"
+            />
+          )}
+
+          {!loading && contractMetadata?.name && (
             <div className="text-center dark:text-white">
               <h2 className="text-2xl font-extrabold ">
                 {contractMetadata.name} Owners
@@ -111,30 +114,32 @@ const Explore: NextPage<ExploreProps> = ({
           )}
         </div>
         <div className="max-w-6xl gap-8 px-4 pb-12 mx-auto mb-40">
-          <ul
-            role="list"
-            className="grid grid-cols-2 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-4">
-            {owners && (
-              <>
-                {owners.slice(0, 80).map((wallet, key) => {
-                  return (
-                    <li
-                      key={key}
-                      className="flex flex-col col-span-1 text-center transition bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg shadow hover:shadow-2xl">
-                      <Link href={`/wallets/${wallet}`}>
-                        <a className="flex flex-col flex-1 p-8 cursor">
-                          <CgProfile className="flex-shrink-0 w-32 h-32 p-4 mx-auto text-white bg-gray-200 rounded-full" />
-                          <h3 className="flex items-center justify-center mt-6 text-sm font-medium text-gray-900">
-                            <Truncate address={wallet} digits={6} />
-                          </h3>
-                        </a>
-                      </Link>
-                    </li>
-                  )
-                })}
-              </>
-            )}
-          </ul>
+          {!loading && (
+            <ul
+              role="list"
+              className="grid grid-cols-2 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-4">
+              {owners && (
+                <>
+                  {owners.slice(0, 80).map((wallet, key) => {
+                    return (
+                      <li
+                        key={key}
+                        className="flex flex-col col-span-1 text-center transition bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg shadow hover:shadow-2xl">
+                        <Link href={`/wallets/${wallet}`}>
+                          <a className="flex flex-col flex-1 p-8 cursor">
+                            <CgProfile className="flex-shrink-0 w-32 h-32 p-4 mx-auto text-white bg-gray-200 rounded-full" />
+                            <h3 className="flex items-center justify-center mt-6 text-sm font-medium text-gray-900">
+                              <Truncate address={wallet} digits={6} />
+                            </h3>
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </>
+              )}
+            </ul>
+          )}
         </div>
       </>
     </Layout>
