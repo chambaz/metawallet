@@ -31,7 +31,7 @@ const Profile: NextPage = () => {
 
   const fetchWallet = async () => {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_BASE_URL + `/${currentAccount}`
+      process.env.NEXT_PUBLIC_BASE_URL + `api/wallets/${currentAccount}`
     )
     const responseJson = await response.json()
     setWallet(responseJson)
@@ -45,7 +45,6 @@ const Profile: NextPage = () => {
     e.preventDefault()
 
     const formData = new FormData(e.currentTarget)
-    const formReader = new FileReader()
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
     const contract = new ethers.Contract(
@@ -54,9 +53,11 @@ const Profile: NextPage = () => {
       signer
     )
 
+    // build links array from formData
     const links = []
     const linkkeys = formData.getAll('linkKey')
     const linkValues = formData.getAll('linkValue')
+    const fileUploadData = new FormData()
     let websiteNum = 0
 
     linkkeys.map((item, index) => {
@@ -69,13 +70,27 @@ const Profile: NextPage = () => {
       })
     })
 
-    // update wallet data
-    const tx = await contract.setWallet(
-      formData.get('username'),
-      formData.get('bio'),
-      '',
-      links
+    // add avatar to separate formData object and upload to IPFS
+    fileUploadData.append('avatar', formData.get('avatar'))
+
+    const uploadAvatarReq = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/upload/${currentAccount}`,
+      {
+        method: 'POST',
+        body: fileUploadData,
+      }
     )
+    const uploadAvatar = await uploadAvatarReq.json()
+
+    const walletData = {
+      username: formData.get('username'),
+      bio: formData.get('bio'),
+      avatar: uploadAvatar.url,
+      links,
+    }
+
+    // update wallet data
+    const tx = await contract.setWallet(...Object.values(walletData))
     router.push(`/wallets/${currentAccount}`)
   }
 
