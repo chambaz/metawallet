@@ -62,7 +62,7 @@ export const Nav = () => {
     if (!isClaimed) {
       // make call to claim wallet
       const claim = await contract.claimWallet({
-        value: ethers.utils.parseEther('1'),
+        value: ethers.utils.parseEther('0'),
       })
     }
 
@@ -224,7 +224,7 @@ export const Nav = () => {
               type="button"
               onClick={() => claimWallet()}
               className="relative inline-flex items-center px-6 py-4 ml-auto text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Claim your wallet
+              Login or claim your wallet
             </button>
           )}
         </div>
