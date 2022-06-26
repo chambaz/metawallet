@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
+import clsx from 'clsx'
+import { useRecoilState } from 'recoil'
+import { useRouter } from 'next/router'
+import {
+  currentAccountState,
+  claimedState,
+  loggedInState,
+} from '../../recoil/atoms'
 import { MdVerified } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import {
@@ -16,6 +24,7 @@ import CurrencyFormat from 'react-currency-format'
 import { useQuery } from '../../lib/helpers'
 import { Layout } from '../../components/layout'
 import { Truncate } from '../../components/truncate'
+import MetaWallet from '../../public/artifacts/MetaWallet.json'
 
 const Wallet = () => {
   const emptyWallet = {
@@ -26,6 +35,11 @@ const Wallet = () => {
     nfts: [],
     transactions: [],
   }
+  const router = useRouter()
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
+  const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
+  const [currentAccount, setCurrentAccount] =
+    useRecoilState(currentAccountState)
   const [wallet, setWallet] = useState(emptyWallet)
   const [currentTab, setCurrentTab] = useState('#nfts')
   const [balance, setBalance] = useState(0)
@@ -39,8 +53,47 @@ const Wallet = () => {
     { name: 'Transactions', href: '#transactions', current: false },
   ]
 
-  const classNames = (...classes) => {
-    return classes.filter(Boolean).join(' ')
+  const claimWallet = async () => {
+    // connect wallet if not already connected
+    const { ethereum } = window
+    let accounts
+
+    if (!ethereum) {
+      alert('Please install Metamask!')
+    }
+
+    try {
+      accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+      const account = accounts[0]
+      console.log('Found an account: ', account)
+      setCurrentAccount(account)
+    } catch (err) {
+      console.log(err)
+    }
+
+    // init contract
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS,
+      MetaWallet.abi,
+      signer
+    )
+
+    // check if already claimed
+    const isClaimed = await contract.isClaimedWallet(accounts[0])
+
+    if (!isClaimed) {
+      // make call to claim wallet
+      const claim = await contract.claimWallet({
+        value: ethers.utils.parseEther('0'),
+      })
+    }
+
+    // update claimed state
+    setIsClaimed(true)
+    setWallet(emptyWallet)
+    fetchWallet()
   }
 
   const fetchWallet = async () => {
@@ -97,6 +150,13 @@ const Wallet = () => {
         <div className="relative inline-block w-full px-8 pt-8 pb-12 my-8 overflow-hidden text-left text-gray-700 align-bottom transition-all transform -translate-y-40 bg-white rounded-lg shadow-xl max-w-7xl">
           {!wallet.address && (
             <div className="py-24 text-center">Loading wallet...</div>
+          )}
+          {wallet.address == currentAccount && !isClaimed && (
+            <button
+              onClick={claimWallet}
+              className="flex items-center mx-auto mt-2 text-lg font-bold text-indigo-500 border-b border-indigo-400">
+              Claim your wallet and customize your profile
+            </button>
           )}
           {wallet.address && (
             <div className="py-16">
@@ -205,7 +265,7 @@ const Wallet = () => {
                             key={tab.name}
                             href={tab.href}
                             onClick={() => setCurrentTab(tab.href)}
-                            className={classNames(
+                            className={clsx(
                               currentTab === tab.href
                                 ? 'border-gray-900 text-gray-900'
                                 : 'border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300',
