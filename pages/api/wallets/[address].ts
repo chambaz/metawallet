@@ -3,6 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { ethers } from 'ethers'
 import MetaWallet from '../../../public/artifacts/MetaWallet.json'
+import { AssetTransfersCategory } from '@alch/alchemy-web3'
 
 type WalletData = {
   address: string
@@ -120,12 +121,14 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const transactionsFrom = await web3.alchemy.getAssetTransfers({
     fromBlock: '0x0',
     fromAddress: address,
+    category: [AssetTransfersCategory.ERC20],
   })
 
   // transactions sent to this address
   const transactionsTo = await web3.alchemy.getAssetTransfers({
     fromBlock: '0x0',
     toAddress: address,
+    category: [AssetTransfersCategory.ERC20],
   })
 
   // combine transactions array
