@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from './button'
 import { MdVerified } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 
@@ -76,9 +77,9 @@ export const Featured = () => {
         ))}
       </ul>
       <Link href="/explore">
-        <a className="relative inline-flex items-center px-6 py-4 mx-auto mt-12 mb-8 ml-auto text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <Button size="md" className="mx-auto mt-12 mb-8 ml-auto">
           Explore more wallets
-        </a>
+        </Button>
       </Link>
     </div>
   )

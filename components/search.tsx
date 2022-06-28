@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import clsx from 'clsx'
+import { Button } from './button'
 
 type Props = {
   label?: string
@@ -38,13 +39,11 @@ export const Search = ({
           <input
             type="text"
             name="address"
-            className="block w-full p-3 text-2xl text-gray-800 border-gray-400 rounded-md shadow-sm dark:border-gray-300 focus:ring-cyan-500 focus:border-cyan-500"
+            className="block w-full p-3 mr-2 text-2xl text-gray-800 border-gray-400 rounded-md shadow-sm dark:border-gray-300 focus:ring-cyan-500 focus:border-cyan-500"
             placeholder={placeholder}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <button
-            type="submit"
-            className="relative inline-flex items-center px-8 py-4 ml-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <Button type="submit">
             <div className="flex flex-col items-center justify-center">
               <span
                 className="font-serif text-3xl leading-none rotate-180"
@@ -57,7 +56,7 @@ export const Search = ({
                 W
               </span>
             </div>
-          </button>
+          </Button>
         </form>
         <p className="inline-block my-4 text-sm transition border-b border-gray-800 dark:border-white dark:text-white hover:border-teal-500 hover:text-teal-500 dark:hover:border-teal-200 dark:hover:text-teal-200">
           {exploreLink && (

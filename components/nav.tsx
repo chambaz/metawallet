@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
@@ -13,6 +13,7 @@ import {
   claimedState,
   darkModeState,
 } from '../recoil/atoms'
+import { Button } from './button'
 import { Truncate } from './truncate'
 import MetaWallet from '../public/artifacts/MetaWallet.json'
 
@@ -192,18 +193,20 @@ export const Nav = () => {
             </li>
           </ul>
           {isClaimed && (
-            <Link href="/profile" passHref>
-              <button className="flex px-8 py-2 mr-8 transition border border-gray-800 rounded-full dark:border-white hover:bg-white hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Edit Profile
-              </button>
-            </Link>
+            <Button
+              size="sm"
+              variant="pill"
+              className="mr-8"
+              onClick={() => router.push('/profile')}>
+              Edit Profile
+            </Button>
           )}
 
           {isLoggedIn && (
             <Link href={`/wallets/${currentAccount}`} passHref>
               <button
                 type="button"
-                className="relative inline-flex items-center text-sm font-bold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-5">
+                className="relative inline-flex items-center text-sm font-bold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <div className="p-4 bg-gray-800 rounded-l-md bg-opacity-90">
                   <CgProfile className="text-2xl" />
                 </div>
@@ -215,12 +218,9 @@ export const Nav = () => {
           )}
 
           {!isLoggedIn && (
-            <button
-              type="button"
-              onClick={() => login()}
-              className="relative inline-flex items-center justify-center px-12 py-4 ml-auto text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <Button size="lg" onClick={login}>
               Log in
-            </button>
+            </Button>
           )}
         </div>
       </div>
