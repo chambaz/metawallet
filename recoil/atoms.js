@@ -19,3 +19,8 @@ export const darkModeState = atom({
   key: 'darkModeState',
   default: true,
 })
+
+export const networkErrorState = atom({
+  key: 'networkErrorState',
+  default: false,
+})

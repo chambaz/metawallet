@@ -12,6 +12,7 @@ import {
   currentAccountState,
   claimedState,
   darkModeState,
+  networkErrorState,
 } from '../recoil/atoms'
 import { Button } from './button'
 import { Truncate } from './truncate'
@@ -22,6 +23,7 @@ export const Nav = () => {
   const [darkMode, setDarkMode] = useRecoilState(darkModeState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
   const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
+  const [isNetworkError, setIsNetworkError] = useRecoilState(networkErrorState)
   const [currentAccount, setCurrentAccount] =
     useRecoilState(currentAccountState)
 
@@ -47,6 +49,15 @@ export const Nav = () => {
 
     if (!ethereum) {
       alert('Please install Metamask!')
+      return
+    }
+
+    const networkCheck = await checkNetwork()
+
+    setIsNetworkError(!networkCheck)
+
+    if (!networkCheck) {
+      return
     }
 
     try {
@@ -65,6 +76,24 @@ export const Nav = () => {
     setIsLoggedIn(true)
   }
 
+  const checkNetwork = async () => {
+    const { ethereum } = window
+
+    if (!ethereum) {
+      console.log('Make sure you have Metamask installed!')
+      return
+    }
+
+    const accounts = await ethereum.request({ method: 'eth_accounts' })
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const { chainId } = await provider.getNetwork()
+
+    console.log(chainId)
+
+    // return chainId === 10
+    return chainId === 31337
+  }
+
   useEffect(() => {
     const checkWallet = async () => {
       // check if wallet connected
@@ -75,6 +104,14 @@ export const Nav = () => {
         return
       } else {
         console.log("Wallet exists! We're ready to go!")
+      }
+
+      const networkCheck = await checkNetwork()
+
+      setIsNetworkError(!networkCheck)
+
+      if (!networkCheck) {
+        return
       }
 
       const accounts = await ethereum.request({ method: 'eth_accounts' })
