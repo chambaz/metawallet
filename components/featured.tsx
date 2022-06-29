@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Button } from './button'
 import { MdVerified } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
@@ -47,6 +48,7 @@ const features = [
 ]
 
 export const Featured = () => {
+  const router = useRouter()
   return (
     <div className="relative py-16 text-center">
       <div className="mb-8">
@@ -76,11 +78,12 @@ export const Featured = () => {
           </li>
         ))}
       </ul>
-      <Link href="/explore">
-        <Button size="md" className="mx-auto mt-12 mb-8 ml-auto">
-          Explore more wallets
-        </Button>
-      </Link>
+      <Button
+        size="md"
+        className="mx-auto mt-12 mb-8 ml-auto"
+        onClick={() => router.push('/explore')}>
+        Explore more wallets
+      </Button>
     </div>
   )
 }

@@ -4,15 +4,18 @@ import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { useRecoilState } from 'recoil'
-import { currentAccountState } from '../recoil/atoms'
+import { currentAccountState, notificationState } from '../recoil/atoms'
 import { Layout } from '../components/layout'
 import { Loader } from '../components/loader'
+import { Button } from '../components/button'
 import MetaWallet from '../public/artifacts/MetaWallet.json'
 
 const Profile: NextPage = () => {
   const router = useRouter()
-  const [linksNum, setLinksNum] = useState(1)
   const [currentAccount] = useRecoilState(currentAccountState)
+  const [noteState, setNoteState] = useRecoilState(notificationState)
+  const [linksNum, setLinksNum] = useState(1)
+  const [submitLabel, setSubmitLabel] = useState('Save')
   const [wallet, setWallet] = useState({ walletData: [] })
 
   const availableLinkTypes = [
@@ -71,28 +74,56 @@ const Profile: NextPage = () => {
       })
     })
 
-    // add avatar to separate formData object and upload to IPFS
-    fileUploadData.append('avatar', formData.get('avatar'))
-
-    const uploadAvatarReq = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}api/upload/${currentAccount}`,
-      {
-        method: 'POST',
-        body: fileUploadData,
-      }
-    )
-    const uploadAvatar = await uploadAvatarReq.json()
-
     const walletData = {
       username: formData.get('username'),
       bio: formData.get('bio'),
-      avatar: uploadAvatar.url,
+      avatar: '',
       links,
     }
 
+    // add avatar to separate formData object and upload to IPFS
+    if (formData.get('avatar')) {
+      fileUploadData.append('avatar', formData.get('avatar'))
+
+      const uploadAvatarReq = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/upload/${currentAccount}`,
+        {
+          method: 'POST',
+          body: fileUploadData,
+        }
+      )
+      const uploadAvatar = await uploadAvatarReq.json()
+
+      walletData.avatar = uploadAvatar.url
+    }
+
     // update wallet data
-    const tx = await contract.setWallet(...Object.values(walletData))
-    router.push(`/wallets/${currentAccount}`)
+    try {
+      const tx = await contract.setWallet(...Object.values(walletData))
+      setNoteState({
+        show: true,
+        type: 'success',
+        heading: `Wallet updated`,
+        message: (
+          <a
+            className="border-b border-black hover:border-0"
+            href={`https://etherscan.io/tx/${tx.hash}`}
+            target="_blank"
+            rel="noreferrer">
+            View on Etherscan
+          </a>
+        ),
+      })
+      router.push(`/wallets/${currentAccount}`)
+    } catch (err) {
+      setNoteState({
+        show: true,
+        type: 'error',
+        heading: `Error ${err.code}`,
+        message: err.message,
+      })
+      setSubmitLabel('Save')
+    }
   }
 
   useEffect(() => {
@@ -290,18 +321,20 @@ const Profile: NextPage = () => {
                 </div>
               </div>
               <div className="pt-5">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <div className="flex justify-end gap-2">
+                  <Button
+                    theme="secondary"
                     onClick={() => router.push(`/wallets/${currentAccount}`)}>
                     Cancel
-                  </button>
-                  <input
+                  </Button>
+                  <Button
                     type="submit"
-                    className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    value="Save"
-                  />
+                    onClick={(e) => {
+                      console.log(e)
+                      setSubmitLabel('Saving...')
+                    }}>
+                    {submitLabel}
+                  </Button>
                 </div>
               </div>
             </>

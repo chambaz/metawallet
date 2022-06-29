@@ -1,13 +1,44 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
+import { useRecoilState } from 'recoil'
 import { Dialog, Transition } from '@headlessui/react'
 import { BiErrorCircle } from 'react-icons/bi'
+import { networkErrorState } from '../recoil/atoms'
+import { Button } from './button'
+import { checkNetwork } from '../lib/helpers'
 
 type Props = {
   show: boolean
   onClose: (value: boolean) => void
 }
 
-export const NetworkModal = ({ show, onClose = () => true }: Props) => {
+export const NetworkModal = ({ show, onClose }: Props) => {
+  const [isNetworkError, setIsNetworkError] = useRecoilState(networkErrorState)
+
+  const addNetwork = async () => {
+    const { ethereum } = window
+
+    if (!ethereum) {
+      console.log('Make sure you have Metamask installed!')
+      return
+    }
+
+    await ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: '0x45',
+          chainName: 'Optimism Kovan',
+          rpcUrls: ['https://kovan.optimism.io'],
+          blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+        },
+      ],
+    })
+
+    const network = await checkNetwork()
+    console.log(network)
+    setIsNetworkError(!network)
+  }
+
   return (
     <Transition.Root show={show} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -47,9 +78,9 @@ export const NetworkModal = ({ show, onClose = () => true }: Props) => {
                     , an Ethereum L2 scaling solution, so that we can provide a
                     fast and affordable experience to our users.
                   </p>
-                  <button className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <Button onClick={() => addNetwork()} size="sm">
                     Add Optimism to MetaMask
-                  </button>
+                  </Button>
                   <p>
                     <a
                       className="text-sm text-red-600 border-b border-red-600"

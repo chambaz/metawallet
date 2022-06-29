@@ -24,3 +24,13 @@ export const networkErrorState = atom({
   key: 'networkErrorState',
   default: false,
 })
+
+export const notificationState = atom({
+  key: 'notificationState',
+  default: {
+    show: false,
+    type: '',
+    heading: '',
+    message: {},
+  },
+})

@@ -1,29 +1,29 @@
-import { useEffect } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
-import { ethers } from 'ethers'
 import { Switch } from '@headlessui/react'
 import { CgProfile } from 'react-icons/cg'
 import { MdDarkMode } from 'react-icons/md'
+import { checkNetwork } from '../lib/helpers'
 import {
   loggedInState,
   currentAccountState,
   claimedState,
   darkModeState,
   networkErrorState,
+  notificationState,
 } from '../recoil/atoms'
 import { Button } from './button'
 import { Truncate } from './truncate'
-import MetaWallet from '../public/artifacts/MetaWallet.json'
 
 export const Nav = () => {
   const router = useRouter()
   const [darkMode, setDarkMode] = useRecoilState(darkModeState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
-  const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
+  const [isClaimed] = useRecoilState(claimedState)
   const [isNetworkError, setIsNetworkError] = useRecoilState(networkErrorState)
+  const [noteState, setNoteState] = useRecoilState(notificationState)
   const [currentAccount, setCurrentAccount] =
     useRecoilState(currentAccountState)
 
@@ -66,7 +66,13 @@ export const Nav = () => {
       console.log('Found an account: ', account)
       setCurrentAccount(account)
     } catch (err) {
-      console.log(err)
+      setNoteState({
+        show: true,
+        type: 'error',
+        heading: `Error ${err.code}`,
+        message: err.message,
+      })
+      return
     }
 
     // update router to wallet page
@@ -75,88 +81,6 @@ export const Nav = () => {
     // update logged in state
     setIsLoggedIn(true)
   }
-
-  const checkNetwork = async () => {
-    const { ethereum } = window
-
-    if (!ethereum) {
-      console.log('Make sure you have Metamask installed!')
-      return
-    }
-
-    const accounts = await ethereum.request({ method: 'eth_accounts' })
-    const provider = new ethers.providers.Web3Provider(ethereum)
-    const { chainId } = await provider.getNetwork()
-
-    console.log(chainId)
-
-    // return chainId === 10
-    return chainId === 31337
-  }
-
-  useEffect(() => {
-    const checkWallet = async () => {
-      // check if wallet connected
-      const { ethereum } = window
-
-      if (!ethereum) {
-        console.log('Make sure you have Metamask installed!')
-        return
-      } else {
-        console.log("Wallet exists! We're ready to go!")
-      }
-
-      const networkCheck = await checkNetwork()
-
-      setIsNetworkError(!networkCheck)
-
-      if (!networkCheck) {
-        return
-      }
-
-      const accounts = await ethereum.request({ method: 'eth_accounts' })
-
-      if (accounts.length > 0) {
-        const account = accounts[0]
-        console.log('Found an account: ', account)
-
-        setCurrentAccount(account)
-        setIsLoggedIn(true)
-
-        // init contract
-        // TODO: Requires being on correct netework to view
-        const provider = new ethers.providers.Web3Provider(ethereum)
-        const signer = provider.getSigner()
-        const contract = new ethers.Contract(
-          process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS,
-          MetaWallet.abi,
-          signer
-        )
-
-        // check if wallet already claimed
-        const isClaimed = await contract.isClaimedWallet(account)
-
-        if (isClaimed) {
-          setIsClaimed(true)
-        } else {
-          if (router.pathname === '/profile') {
-            router.push(`/wallets/${account}`)
-          }
-        }
-      } else {
-        console.log('No account found')
-
-        if (router.pathname === '/profile') {
-          router.push(`/`)
-        }
-      }
-    }
-
-    checkWallet()
-    setDarkMode(document.documentElement.classList.contains('dark'))
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <>

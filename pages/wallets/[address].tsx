@@ -7,6 +7,7 @@ import {
   currentAccountState,
   claimedState,
   loggedInState,
+  notificationState,
 } from '../../recoil/atoms'
 import { MdVerified } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
@@ -41,6 +42,7 @@ const Wallet = () => {
   const [isClaimed, setIsClaimed] = useRecoilState(claimedState)
   const [currentAccount, setCurrentAccount] =
     useRecoilState(currentAccountState)
+  const [noteState, setNoteState] = useRecoilState(notificationState)
   const [wallet, setWallet] = useState(emptyWallet)
   const [currentTab, setCurrentTab] = useState('#nfts')
   const [balance, setBalance] = useState(0)
@@ -70,6 +72,12 @@ const Wallet = () => {
       setCurrentAccount(account)
     } catch (err) {
       console.log(err)
+      setNoteState({
+        show: true,
+        type: 'error',
+        heading: `Error ${err.code}`,
+        message: err.message,
+      })
     }
 
     // init contract
@@ -86,9 +94,35 @@ const Wallet = () => {
 
     if (!isClaimed) {
       // make call to claim wallet
-      const claim = await contract.claimWallet({
-        value: ethers.utils.parseEther('0'),
-      })
+      try {
+        const claim = await contract.claimWallet({
+          value: ethers.utils.parseEther('0'),
+        })
+
+        setNoteState({
+          show: true,
+          type: 'success',
+          heading: `Wallet claimed`,
+          message: (
+            <a
+              className="border-b border-black hover:border-0"
+              href={`https://etherscan.io/tx/${claim.hash}`}
+              target="_blank"
+              rel="noreferrer">
+              View on Etherscan
+            </a>
+          ),
+        })
+      } catch (err) {
+        console.log(err)
+        setNoteState({
+          show: true,
+          type: 'error',
+          heading: `Error ${err.code}`,
+          message: err.message,
+        })
+        return
+      }
     }
 
     // update claimed state
