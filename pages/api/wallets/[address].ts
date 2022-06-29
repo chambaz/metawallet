@@ -179,7 +179,7 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           imgParts[1] = imgParts[1].substring(5, imgParts[1].length)
         }
 
-        img = `https://cloudflare-ipfs.com/ipfs/${imgParts[1]}`
+        img = `https://metawallet.mypinata.cloud/ipfs/${imgParts[1]}`
       }
 
       return {
