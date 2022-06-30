@@ -182,6 +182,18 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         img = `https://metawallet.mypinata.cloud/ipfs/${imgParts[1]}`
       }
 
+      const checkImageReq = await fetch(img).catch((err) =>
+        console.log('error', err)
+      )
+
+      if (!checkImageReq) {
+        return
+      }
+
+      if (checkImageReq.status !== 200) {
+        return
+      }
+
       return {
         contractAddress,
         tokenId,
