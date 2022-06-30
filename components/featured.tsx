@@ -1,12 +1,25 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from './button'
 import { Truncate } from './truncate'
 import { MdVerified } from 'react-icons/md'
-import verified from '../verify.json'
 
 export const Featured = () => {
   const router = useRouter()
+  const [wallets, setWallets] = useState([])
+
+  const fetchWallets = async () => {
+    const featuredReq = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/wallets/featured`
+    )
+    const featured = await featuredReq.json()
+    setWallets(featured.wallets)
+  }
+
+  useEffect(() => {
+    fetchWallets()
+  }, [])
   return (
     <div className="relative py-16 text-center">
       <div className="mb-8">
@@ -17,7 +30,7 @@ export const Featured = () => {
       <ul
         role="list"
         className="grid grid-cols-2 gap-6 md:gap-10 md:grid-cols-3 lg:grid-cols-4">
-        {verified.wallets.map((wallet, index) => (
+        {wallets.map((wallet, index) => (
           <li
             key={index}
             className="flex flex-col col-span-1 text-center transition bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg shadow hover:shadow-lg dark:hover:shadow-2xl">
