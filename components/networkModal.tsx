@@ -26,10 +26,10 @@ export const NetworkModal = ({ show, onClose }: Props) => {
       method: 'wallet_addEthereumChain',
       params: [
         {
-          chainId: '0x45',
-          chainName: 'Optimism Kovan',
-          rpcUrls: ['https://kovan.optimism.io'],
-          blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+          chainId: '0x7a69',
+          chainName: 'Localhost 8545',
+          rpcUrls: ['http://localhost:8545'],
+          // blockExplorerUrls: ['https://optimistic.etherscan.io/'],
         },
       ],
     })
