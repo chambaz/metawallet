@@ -1,6 +1,5 @@
 require('@nomiclabs/hardhat-waffle')
 require('dotenv').config()
-const verifyWallets = require('./verify.json')
 
 task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners()
@@ -74,8 +73,10 @@ task('claim', 'Claim a wallet')
     await txn.wait()
   })
 
-task('claimWallets', 'Claim all wallets on file').setAction(
-  async (taskArgs, hre) => {
+task('verifyWallets', 'Verify all wallets on file')
+  .addParam('file', 'Path to file')
+  .setAction(async (taskArgs, hre) => {
+    const verifyWallets = require(taskArgs.file)
     const contract = await hre.ethers.getContractAt(
       'MetaWallet',
       process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS
@@ -92,17 +93,16 @@ task('claimWallets', 'Claim all wallets on file').setAction(
         const setTxn = await contract.adminSetWallet(
           wallet.address,
           wallet.username,
-          wallet.bio,
+          '',
           wallet.avatar,
-          wallet.links
+          []
         )
         await setTxn.wait()
       })
     )
 
     console.log('Complete')
-  }
-)
+  })
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
