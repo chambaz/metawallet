@@ -19,7 +19,7 @@ const Featured = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       },
       {
         address: '0x54BE3a794282C030b15E43aE2bB182E14c409C5e',
-        username: 'franklinisbored',
+        username: 'pranksy.eth',
         avatar:
           'https://pbs.twimg.com/profile_images/1541659762630066179/uQaUkTec_400x400.jpg',
       },
