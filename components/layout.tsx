@@ -48,8 +48,6 @@ export const Layout = ({ children }: Props) => {
       if (accounts.length > 0) {
         const networkCheck = await checkNetwork()
 
-        setIsNetworkError(!networkCheck)
-
         if (!networkCheck) {
           return
         }
