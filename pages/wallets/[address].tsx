@@ -24,6 +24,7 @@ import {
 import CurrencyFormat from 'react-currency-format'
 import { useQuery } from '../../lib/helpers'
 import { Layout } from '../../components/layout'
+import { Button } from '../../components/button'
 import { Truncate } from '../../components/truncate'
 import { Loader } from '../../components/loader'
 import MetaWallet from '../../public/artifacts/MetaWallet.json'
@@ -36,6 +37,7 @@ const Wallet = () => {
     tokens: [],
     nfts: [],
     transactions: [],
+    nftPageKey: '',
   }
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInState)
@@ -147,6 +149,24 @@ const Wallet = () => {
     if (json.data.market_data.price_usd) {
       setEthPrice(json.data.market_data.price_usd)
     }
+  }
+
+  const loadMoreNfts = async (target) => {
+    target.innerHTML = 'Loading...'
+
+    const fetchMoreNftsReq = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/nfts/${wallet.address}/${wallet.nftPageKey}`
+    )
+
+    const fetchMoreNfts = await fetchMoreNftsReq.json()
+
+    setWallet({
+      ...wallet,
+      nfts: wallet.nfts.concat(fetchMoreNfts.nfts),
+      nftPageKey: fetchMoreNfts.pageKey,
+    })
+
+    target.innerHTML = 'Load more'
   }
 
   useEffect(() => {
@@ -318,24 +338,45 @@ const Wallet = () => {
                   style={{
                     display: currentTab === '#nfts' ? 'block' : 'none',
                   }}>
-                  <div className="grid grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-6 mt-8 md:grid-cols-3 lg:grid-cols-4">
                     {wallet?.nfts?.map((nft, index) => {
                       if (!nft || !nft.img) {
                         return false
                       }
                       return (
-                        <div
-                          key={index}
-                          className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
-                          <p>Loading...</p>
-                          <img
-                            className="absolute object-cover w-full h-full"
-                            src={nft.img}
-                          />
+                        <div className="text-left">
+                          <div
+                            key={index}
+                            className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
+                            <p>Loading...</p>
+                            <img
+                              className="absolute object-cover w-full h-full rounded-lg"
+                              src={nft.img}
+                              onError={(e) => {
+                                e.currentTarget.src = '/img/placeholder.jpg'
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <h3 className="pt-2 text-sm font-bold">
+                              {nft.title}
+                            </h3>
+                            <h4 className="text-sm text-gray-500">
+                              {nft.collectionName}
+                            </h4>
+                          </div>
                         </div>
                       )
                     })}
                   </div>
+                  {wallet.nftPageKey && (
+                    <Button
+                      onClick={(e) => loadMoreNfts(e.currentTarget)}
+                      size="lg"
+                      className="mx-auto mt-16">
+                      Load More
+                    </Button>
+                  )}
                 </div>
                 <div
                   style={{

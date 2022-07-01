@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { BigNumber } from '@ethersproject/bignumber'
 import { createAlchemyWeb3 } from '@alch/alchemy-web3'
 import { ethers } from 'ethers'
+import { transformNfts } from '../../../lib/helpers'
 import MetaWallet from '../../../public/artifacts/MetaWallet.json'
 import { AssetTransfersCategory } from '@alch/alchemy-web3'
 
@@ -55,6 +56,7 @@ type Data = {
   tokens: Token[]
   nfts: Nft[]
   transactions: Transaction[]
+  nftPageKey?: string
 }
 
 const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -155,54 +157,12 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   // get owned NFTs
   const nftsQuery = await web3.alchemy.getNfts({
     owner: address,
+    // @ts-ignore
+    'filters[]': ['SPAM'],
   })
 
   // proxy ipfs images
-  let nfts = await Promise.all(
-    nftsQuery.ownedNfts.map(async (nft) => {
-      const contractAddress = nft.contract.address
-      const tokenId = nft.id.tokenId
-      const response = await web3.alchemy.getNftMetadata({
-        contractAddress,
-        tokenId,
-      })
-
-      if (!response.media.length || !response.metadata.image) {
-        return
-      }
-
-      let img = response.metadata.image
-      if (img.substring(0, 7) === 'ipfs://') {
-        const imgParts = img.split('ipfs://')
-
-        if (imgParts[1].indexOf('ipfs/') > -1) {
-          imgParts[1] = imgParts[1].substring(5, imgParts[1].length)
-        }
-
-        img = `https://metawallet.mypinata.cloud/ipfs/${imgParts[1]}`
-      }
-
-      const checkImageReq = await fetch(img).catch((err) =>
-        console.log('error', err)
-      )
-
-      if (!checkImageReq) {
-        return
-      }
-
-      if (checkImageReq.status !== 200) {
-        return
-      }
-
-      return {
-        contractAddress,
-        tokenId,
-        title: response.title,
-        tokenUri: response.tokenUri.gateway,
-        img,
-      }
-    })
-  )
+  let nfts = await transformNfts(nftsQuery.ownedNfts)
 
   nfts = nfts.filter((nft) => nft)
 
@@ -214,6 +174,7 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     tokens,
     nfts,
     transactions,
+    nftPageKey: nftsQuery.pageKey,
   }
 
   res.json(data)
