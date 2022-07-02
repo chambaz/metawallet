@@ -6,6 +6,7 @@ type Props = {
   variant?: 'button' | 'pill'
   theme?: 'primary' | 'secondary'
   type?: 'button' | 'submit'
+  disabled?: boolean
   className?: string
   onClick?: Function
 }
@@ -16,6 +17,7 @@ export const Button = ({
   variant = 'button',
   theme = 'primary',
   type = 'button',
+  disabled = false,
   className = '',
   onClick = () => {},
 }: Props) => {
@@ -24,7 +26,7 @@ export const Button = ({
       type={type}
       onClick={(e) => onClick(e)}
       className={clsx(
-        'flex items-center justify-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+        'flex items-center justify-center text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
         size === 'sm' && 'px-8 py-2 text-sm',
         size === 'md' && 'px-6 py-4 text-sm',
         size === 'lg' && 'px-12 py-4',
@@ -37,6 +39,7 @@ export const Button = ({
           'text-gray-700 bg-white border-gray-300 hover:bg-gray-50',
         variant === 'pill' &&
           'border border-gray-800 rounded-full dark:border-white hover:bg-white hover:text-gray-800',
+        disabled && 'pointer-events-none opacity-60 cursor-default',
         className
       )}>
       {children}

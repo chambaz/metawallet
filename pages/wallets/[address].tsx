@@ -50,6 +50,7 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0)
   const [ethPrice, setEthPrice] = useState(0)
   const [claimed, setClaimed] = useState(false)
+  const [loadingNfts, setLoadingNfts] = useState(false)
   const query = useQuery()
 
   const tabs = [
@@ -151,8 +152,8 @@ const Wallet = () => {
     }
   }
 
-  const loadMoreNfts = async (target) => {
-    target.innerHTML = 'Loading...'
+  const loadMoreNfts = async () => {
+    setLoadingNfts(true)
 
     const fetchMoreNftsReq = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}api/nfts/${wallet.address}/${wallet.nftPageKey}`
@@ -166,7 +167,7 @@ const Wallet = () => {
       nftPageKey: fetchMoreNfts.pageKey,
     })
 
-    target.innerHTML = 'Load more'
+    setLoadingNfts(false)
   }
 
   useEffect(() => {
@@ -371,10 +372,11 @@ const Wallet = () => {
                   </div>
                   {wallet.nftPageKey && (
                     <Button
-                      onClick={(e) => loadMoreNfts(e.currentTarget)}
+                      onClick={() => loadMoreNfts()}
                       size="lg"
+                      disabled={loadingNfts}
                       className="mx-auto mt-16">
-                      Load More
+                      {loadingNfts ? 'Loading...' : 'Load more'}
                     </Button>
                   )}
                 </div>
