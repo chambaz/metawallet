@@ -42,10 +42,10 @@ const Featured = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           'https://pbs.twimg.com/profile_images/1528177750338437121/t59NlZqD_400x400.jpg',
       },
       {
-        address: '0xd6a984153aCB6c9E2d788f08C2465a1358BB89A7',
-        username: 'garyvee',
+        address: '0x240ad467a71210629D71D4dE22ebde27951c83Fc',
+        username: 'collin.eth',
         avatar:
-          'https://pbs.twimg.com/profile_images/1493524673962852353/qRxbC9Xq_400x400.jpg',
+          'https://pbs.twimg.com/profile_images/1540692022826131456/8Mvz8awu_400x400.jpg',
       },
       {
         address: '0x0984974Ac1F1DA97d2242652042692856C76BF4F',
