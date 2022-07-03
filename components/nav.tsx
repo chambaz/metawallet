@@ -30,7 +30,7 @@ export const Nav = () => {
   const navItems = [
     {
       text: 'Explore Wallets',
-      link: '/explore',
+      link: '/',
     },
     {
       text: 'About MetaWallet',
@@ -114,8 +114,9 @@ export const Nav = () => {
                       className={clsx(
                         'dark:text-white transition hover:text-teal-500 dark:hover:text-teal-200',
                         !item.link.includes('/#') &&
+                          item.text !== 'Explore Wallets' &&
                           router.asPath.includes(item.link) &&
-                          'text-teal-600 dark:text-teal-300'
+                          'text-teal-500 dark:text-teal-200'
                       )}>
                       {item.text}
                     </a>
