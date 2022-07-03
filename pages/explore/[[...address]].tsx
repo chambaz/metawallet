@@ -91,7 +91,6 @@ const Explore: NextPage<ExploreProps> = ({
                 label="Contract address"
                 exploreLink={false}
                 action="explore"
-                placeholder={address}
                 className="mt-4"
               />
             </div>
