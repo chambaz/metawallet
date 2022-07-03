@@ -87,12 +87,7 @@ const Explore: NextPage<ExploreProps> = ({
                   Doodles
                 </option>
               </select>
-              <Search
-                label="Contract address"
-                exploreLink={false}
-                action="explore"
-                className="mt-4"
-              />
+              <Search exploreLink={false} action="explore" className="mt-4" />
             </div>
           </div>
           {loading && (
