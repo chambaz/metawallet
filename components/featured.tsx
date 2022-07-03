@@ -52,12 +52,12 @@ export const Featured = () => {
           </li>
         ))}
       </ul>
-      <Button
+      {/* <Button
         size="md"
         className="mx-auto mt-12 mb-8 ml-auto"
         onClick={() => router.push('/explore')}>
         Explore more wallets
-      </Button>
+      </Button> */}
     </div>
   )
 }
