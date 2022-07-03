@@ -66,7 +66,7 @@ export const Search = ({
               placeholder={placeholder}
               onChange={(e) => setAddress(e.target.value)}
             />
-            <div className="absolute top-0 flex items-center right-[1px] min-w-[140px]">
+            {/* <div className="absolute top-0 flex items-center right-[1px] min-w-[140px]">
               <Listbox value={chainSelected} onChange={setChainSelected}>
                 {({ open }) => (
                   <div className="relative w-full mt-1">
@@ -134,7 +134,7 @@ export const Search = ({
                   </div>
                 )}
               </Listbox>
-            </div>
+            </div> */}
           </div>
           <Button type="submit">
             <div className="flex flex-col items-center justify-center">
