@@ -21,7 +21,7 @@ export const Featured = () => {
     fetchWallets()
   }, [])
   return (
-    <div className="relative py-16 text-center">
+    <div id="featured" className="relative py-16 text-center">
       <div className="mb-8">
         <h2 className="mb-4 text-3xl font-bold text-center dark:text-white">
           Featured MetaWallet profiles

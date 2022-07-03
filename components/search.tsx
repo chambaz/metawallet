@@ -153,7 +153,7 @@ export const Search = ({
         </form>
         <p className="inline-block my-4 text-sm transition border-b border-gray-800 dark:border-white dark:text-white hover:border-teal-500 hover:text-teal-500 dark:hover:border-teal-200 dark:hover:text-teal-200">
           {exploreLink && (
-            <Link href="/explore">
+            <Link href="#featured">
               <a>Explore more wallets</a>
             </Link>
           )}
