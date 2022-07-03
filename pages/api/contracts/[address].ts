@@ -11,8 +11,9 @@ type Data = {
 
 const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { address } = req.query
-  const contractUrl = `https://eth-mainnet.alchemyapi.io/nft/v2/${process.env.ALCHEMY_API_KEY}/getContractMetadata`
-  const ownersUrl = `https://eth-mainnet.alchemyapi.io/nft/v2/${process.env.ALCHEMY_API_KEY}/getOwnersForCollection`
+  const alchemyUrl = 'https://eth-mainnet.alchemyapi.io/nft/v2'
+  const contractUrl = `${alchemyUrl}/${process.env.ALCHEMY_API_KEY_MAINNET}/getContractMetadata`
+  const ownersUrl = `${alchemyUrl}/${process.env.ALCHEMY_API_KEY_MAINNET}/getOwnersForCollection`
 
   const fetchContract = `${contractUrl}?contractAddress=${address}`
   const contractResult = await fetch(fetchContract)

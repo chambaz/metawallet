@@ -111,15 +111,15 @@ module.exports = {
   solidity: '0.8.4',
   networks: {
     mainnet: {
-      url: process.env.ALCHEMY_API_KEY_MAINNET,
+      url: process.env.ALCHEMY_API_URL_MAINNET,
       accounts: [process.env.PRIVATE_KEY],
     },
     optimism: {
-      url: process.env.ALCHEMY_API_KEY_OPTIMISM,
+      url: process.env.ALCHEMY_API_URL_OPTIMISM,
       accounts: [process.env.PRIVATE_KEY],
     },
     kovan: {
-      url: process.env.ALCHEMY_API_KEY_KOVAN,
+      url: process.env.ALCHEMY_API_URL_KOVAN,
       accounts: [process.env.PRIVATE_KEY],
     },
   },

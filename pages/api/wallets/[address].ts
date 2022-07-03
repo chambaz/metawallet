@@ -61,10 +61,10 @@ type Data = {
 
 const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const mainnetProvider = new ethers.providers.JsonRpcProvider(
-    process.env.ALCHEMY_API_KEY_MAINNET
+    process.env.ALCHEMY_API_URL_MAINNET
   )
   const optimismProvider = new ethers.providers.JsonRpcProvider(
-    // process.env.ALCHEMY_API_KEY_KOVAN
+    // process.env.ALCHEMY_API_URL_KOVAN
     'http://localhost:8545'
   )
   const contract = new ethers.Contract(
@@ -73,7 +73,7 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     optimismProvider.getSigner()
   )
 
-  const web3 = createAlchemyWeb3(process.env.ALCHEMY_API_KEY_MAINNET)
+  const web3 = createAlchemyWeb3(process.env.ALCHEMY_API_URL_MAINNET)
 
   let address: string = req.query.address as string
 
