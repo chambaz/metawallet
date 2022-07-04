@@ -26,6 +26,11 @@ const Profile: NextPage = () => {
     'medium',
     'tiktok',
     'shanpchat',
+    'opensea',
+    'magiceden',
+    'rarible',
+    'looksrare',
+    'superrare',
     'website',
   ]
 
@@ -48,6 +53,8 @@ const Profile: NextPage = () => {
   const updateProfile = async (e) => {
     e.preventDefault()
 
+    setSubmitLabel('Saving...')
+
     const formData = new FormData(e.currentTarget)
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
@@ -65,6 +72,9 @@ const Profile: NextPage = () => {
     let websiteNum = 0
 
     linkkeys.map((item, index) => {
+      if (!linkValues[index]) {
+        return
+      }
       if (item === 'website') {
         item = `website${++websiteNum}`
       }
@@ -77,12 +87,13 @@ const Profile: NextPage = () => {
     const walletData = {
       username: formData.get('username'),
       bio: formData.get('bio'),
-      avatar: '',
+      avatar: formData.get('originalAvatar'),
       links,
     }
 
     // add avatar to separate formData object and upload to IPFS
-    if (formData.get('avatar')) {
+    // @ts-ignore
+    if (formData.get('avatar').size) {
       fileUploadData.append('avatar', formData.get('avatar'))
 
       const uploadAvatarReq = await fetch(
@@ -218,6 +229,11 @@ const Profile: NextPage = () => {
                               name="avatar"
                               className="px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             />
+                            <input
+                              type="hidden"
+                              name="originalAvatar"
+                              value={wallet.walletData[4]}
+                            />
                           </div>
                         </div>
                       </div>
@@ -299,8 +315,9 @@ const Profile: NextPage = () => {
                                   })}
                                 </select>
                                 <input
-                                  type="text"
+                                  type="url"
                                   name="linkValue"
+                                  placeholder="Paste full url..."
                                   className="flex-1 block w-full min-w-0 border-l-0 border-gray-300 rounded-none rounded-r-md sm:text-sm focus:ring-0 focus:border-gray-300 focus:outline-none"
                                 />
 
@@ -327,14 +344,7 @@ const Profile: NextPage = () => {
                     onClick={() => router.push(`/wallets/${currentAccount}`)}>
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    onClick={(e) => {
-                      console.log(e)
-                      setSubmitLabel('Saving...')
-                    }}>
-                    {submitLabel}
-                  </Button>
+                  <Button type="submit">{submitLabel}</Button>
                 </div>
               </div>
             </>
