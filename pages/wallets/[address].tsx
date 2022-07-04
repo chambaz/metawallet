@@ -370,10 +370,8 @@ const Wallet = () => {
                         return false
                       }
                       return (
-                        <div className="text-left">
-                          <div
-                            key={index}
-                            className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
+                        <div className="text-left" key={index}>
+                          <div className="relative h-[276px] bg-gray-100 text-xs flex items-center justify-center text-center">
                             <p>Loading...</p>
                             <img
                               className="absolute object-cover w-full h-full rounded-lg"
