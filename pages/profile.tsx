@@ -25,7 +25,7 @@ const Profile: NextPage = () => {
     'github',
     'medium',
     'tiktok',
-    'shanpchat',
+    'snapchat',
     'opensea',
     'magiceden',
     'rarible',
@@ -264,6 +264,10 @@ const Profile: NextPage = () => {
                                             key={index}
                                             value={availableLink}
                                             selected={
+                                              (item[0].includes('website') &&
+                                                availableLink.includes(
+                                                  'website'
+                                                )) ||
                                               availableLink === item[0]
                                             }>
                                             {availableLink

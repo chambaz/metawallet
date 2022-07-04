@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import clsx from 'clsx'
 import { useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import {
   currentAccountState,
   claimedState,
@@ -254,11 +255,25 @@ const Wallet = () => {
                       {wallet.walletData[5] && (
                         <ul className="flex mt-4">
                           {wallet.walletData[5].map((link, key) => {
+                            const customIcons = [
+                              'opensea',
+                              'magiceden',
+                              'rarible',
+                              'looksrare',
+                              'superrare',
+                            ]
                             if (!link[0]) {
                               return
                             }
                             return (
-                              <li className="mx-2" key={key}>
+                              <li
+                                key={key}
+                                data-type={link[0]}
+                                className={clsx(
+                                  'mx-2 overflow-visible',
+                                  customIcons.includes(link[0]) &&
+                                    '-translate-y-[2px]'
+                                )}>
                                 <a href={link[1]}>
                                   {link[0] === 'twitter' && <FaTwitter />}
                                   {link[0] === 'instagram' && <FaInstagram />}
@@ -269,6 +284,13 @@ const Wallet = () => {
                                   {link[0] === 'snapchat' && <FaSnapchat />}
                                   {link[0].includes('website') && (
                                     <FaGlobeAmericas />
+                                  )}
+                                  {customIcons.includes(link[0]) && (
+                                    <Image
+                                      src={`/icons/${link[0]}.svg`}
+                                      height={link[0] === 'looksrare' ? 20 : 16}
+                                      width={link[0] === 'looksrare' ? 20 : 16}
+                                    />
                                   )}
                                 </a>
                               </li>
