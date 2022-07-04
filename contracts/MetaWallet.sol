@@ -28,6 +28,9 @@ contract MetaWallet is Ownable {
   uint claimPrice = 0 ether;
   uint updatePrice = 0 ether;
 
+  event Claim(address indexed _address);
+  event Update(address indexed _address, string username, string bio, string avatar, Link[20] links);
+
   constructor() {
     console.log('Deploying MetaWallet');
   }
@@ -43,6 +46,8 @@ contract MetaWallet is Ownable {
       
       addresses[addressRegistryCount] = msg.sender;
       addressRegistryCount++;
+
+      emit Claim(msg.sender);
     }
   }
 
@@ -54,6 +59,8 @@ contract MetaWallet is Ownable {
 
       addresses[addressRegistryCount] = _address;
       addressRegistryCount++;
+
+      emit Claim(_address);
     }
   }
 
@@ -100,6 +107,8 @@ contract MetaWallet is Ownable {
       for (uint i = _links.length; i < 20; i++) {
         walletMap[msg.sender].links[i] = Link('', '');
       }
+
+      emit Update(msg.sender, _username, _bio, _avatar, walletMap[msg.sender].links);
     }
   }
 
@@ -126,6 +135,8 @@ contract MetaWallet is Ownable {
       for (uint i = _links.length; i < 20; i++) {
         walletMap[_address].links[i] = Link('', '');
       }
+
+      emit Update(msg.sender, _username, _bio, _avatar, walletMap[msg.sender].links);
     }
   }
 
