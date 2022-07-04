@@ -101,7 +101,9 @@ export const Nav = () => {
                 W
               </span>
             </div>
-            <p className="font-serif text-3xl dark:text-white">MetaWallet</p>
+            <p className="font-serif text-3xl text-zinc-800 dark:text-white">
+              MetaWallet
+            </p>
           </a>
         </Link>
         <div className="items-center hidden ml-auto 2xl:flex">
