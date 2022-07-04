@@ -24,10 +24,10 @@ const Featured = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           'https://pbs.twimg.com/profile_images/1541659762630066179/uQaUkTec_400x400.jpg',
       },
       {
-        address: '0x6d315ba45f1a1112808853ea15aa9bddf3d5b8b4',
-        username: 'steveaoki',
+        address: '0x51787a2C56d710c68140bdAdeFD3A98BfF96FeB4',
+        username: 'seedphrase.eth',
         avatar:
-          'https://pbs.twimg.com/profile_images/1486744176993525762/XWZG4FJe_400x400.jpg',
+          'https://pbs.twimg.com/profile_images/1491477987962806274/TG9JhxIB_400x400.png',
       },
       {
         address: '0xB7d6ed1d7038BaB3634eE005FA37b925B11E9b13',
