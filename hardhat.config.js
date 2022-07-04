@@ -82,26 +82,22 @@ task('verifyWallets', 'Verify all wallets on file')
       process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS
     )
 
-    const verify = await Promise.all(
-      verifyWallets.wallets.map(async (wallet) => {
-        console.log('Claiming wallet', wallet.address)
-        const claimTxn = await contract.adminClaimWallet(wallet.address)
-        await claimTxn.wait()
+    for (const wallet of verifyWallets.wallets) {
+      console.log('Claiming wallet', wallet.address)
+      const claimTxn = await contract.adminClaimWallet(wallet.address)
+      await claimTxn.wait()
 
-        console.log('Setting wallet', wallet.address)
+      console.log('Setting wallet', wallet.address)
 
-        const setTxn = await contract.adminSetWallet(
-          wallet.address,
-          wallet.username,
-          '',
-          wallet.avatar,
-          []
-        )
-        await setTxn.wait()
-      })
-    )
-
-    console.log('Complete')
+      const setTxn = await contract.adminSetWallet(
+        wallet.address,
+        wallet.username,
+        '',
+        wallet.avatar,
+        []
+      )
+      await setTxn.wait()
+    }
   })
 
 /**
