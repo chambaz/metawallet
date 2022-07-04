@@ -64,13 +64,18 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     process.env.ALCHEMY_API_URL_MAINNET
   )
   const optimismProvider = new ethers.providers.JsonRpcProvider(
-    // process.env.ALCHEMY_API_URL_KOVAN
-    'http://localhost:8545'
+    process.env.ALCHEMY_API_URL_KOVAN
+    // 'http://localhost:8545'
   )
+
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, optimismProvider)
+  // @ts-ignore
+  const signer = wallet.provider.getSigner(wallet.address)
+
   const contract = new ethers.Contract(
     process.env.NEXT_PUBLIC_META_WALLET_CONTRACT_ADDRESS,
     MetaWallet.abi,
-    optimismProvider.getSigner()
+    signer
   )
 
   const web3 = createAlchemyWeb3(process.env.ALCHEMY_API_URL_MAINNET)

@@ -118,7 +118,7 @@ const Profile: NextPage = () => {
         message: (
           <a
             className="border-b border-black hover:border-0"
-            href={`https://etherscan.io/tx/${tx.hash}`}
+            href={`https://kovan-optimistic.etherscan.io/tx/${tx.hash}`}
             target="_blank"
             rel="noreferrer">
             View on Etherscan

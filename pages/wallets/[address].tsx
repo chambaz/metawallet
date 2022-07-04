@@ -110,7 +110,7 @@ const Wallet = () => {
           message: (
             <a
               className="border-b border-black hover:border-0"
-              href={`https://etherscan.io/tx/${claim.hash}`}
+              href={`https://kovan-optimistic.etherscan.io/tx/${claim.hash}`}
               target="_blank"
               rel="noreferrer">
               View on Etherscan
@@ -235,7 +235,7 @@ const Wallet = () => {
                     )}
                   </div>
                   {claimed && (
-                    <h1 className="flex items-center mt-6 mb-4 font-serif text-3xl">
+                    <h1 className="flex items-center mt-6 mb-2 font-serif text-3xl">
                       {wallet.walletData[2] ? (
                         wallet.walletData[2]
                       ) : (
@@ -245,7 +245,7 @@ const Wallet = () => {
                     </h1>
                   )}
                   {!claimed && (
-                    <h1 className="flex items-center mt-6 mb-4 font-serif text-3xl">
+                    <h1 className="flex items-center mt-6 mb-2 font-serif text-3xl">
                       <Truncate address={wallet.address} />
                     </h1>
                   )}
@@ -253,7 +253,7 @@ const Wallet = () => {
                   {claimed && (
                     <>
                       {wallet.walletData[5] && (
-                        <ul className="flex flex-wrap gap-4 mb-4">
+                        <ul className="flex flex-wrap gap-4 mt-4 mb-8">
                           {wallet.walletData[5].map((link, key) => {
                             const customIcons = [
                               'opensea',
@@ -295,9 +295,7 @@ const Wallet = () => {
                         </ul>
                       )}
                       {wallet.walletData[3] && (
-                        <p className="mt-4 leading-loose">
-                          {wallet.walletData[3]}
-                        </p>
+                        <p className="leading-loose">{wallet.walletData[3]}</p>
                       )}
                     </>
                   )}
