@@ -95,6 +95,9 @@ export const Layout = ({ children }: Props) => {
 
   return (
     <div className="h-full min-h-screen text-gray-800 bg-slate-100 dark:bg-gray-800">
+      <div className="w-full p-2 text-sm font-bold text-center text-white bg-teal-500">
+        <p>📣 MetaWallet is in alpha and currently running on testnet 📣</p>
+      </div>
       <NetworkModal show={isNetworkError} onClose={setIsNetworkError} />
       <Notification
         show={noteState.show}

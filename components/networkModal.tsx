@@ -69,7 +69,7 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                   <p>
                     Our smart contracts run on{' '}
                     <a
-                      className="text-red-600 border-b border-red-600 outline-none"
+                      className="text-red-600 transition border-b border-red-600 outline-none hover:border-transparent"
                       href="https://www.optimism.io/"
                       target="_blank"
                       rel="noreferrer">
@@ -79,11 +79,31 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                     fast and affordable experience to our users.
                   </p>
                   <Button onClick={() => addNetwork()} size="sm">
-                    Add Optimism to MetaMask
+                    Switch to Optimism Network
                   </Button>
+                  <p className="text-sm italic">
+                    MetaWallet is in alpha and currently running on testnet,
+                    grab test ETH{' '}
+                    <a
+                      className="transition border-b border-black hover:border-transparent"
+                      href="https://community.optimism.io/docs/useful-tools/faucets/"
+                      target="_blank"
+                      rel="noreferrer">
+                      from the faucet
+                    </a>{' '}
+                    or{' '}
+                    <a
+                      className="transition border-b border-black hover:border-transparent"
+                      href="https://twitter.com/chambaz"
+                      target="_blank"
+                      rel="noreferrer">
+                      message @chambaz
+                    </a>{' '}
+                    for an airdrop.
+                  </p>
                   <p>
                     <a
-                      className="text-sm text-red-600 border-b border-red-600"
+                      className="text-sm text-red-600 transition border-b border-red-600 hover:border-transparent"
                       href="https://gateway.optimism.io/"
                       target="_blank"
                       rel="noreferrer">
