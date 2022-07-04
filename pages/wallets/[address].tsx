@@ -235,7 +235,7 @@ const Wallet = () => {
                     )}
                   </div>
                   {claimed && (
-                    <h1 className="flex items-center mt-6 font-serif text-3xl">
+                    <h1 className="flex items-center mt-6 mb-4 font-serif text-3xl">
                       {wallet.walletData[2] ? (
                         wallet.walletData[2]
                       ) : (
@@ -245,7 +245,7 @@ const Wallet = () => {
                     </h1>
                   )}
                   {!claimed && (
-                    <h1 className="flex items-center mt-6 font-serif text-3xl">
+                    <h1 className="flex items-center mt-6 mb-4 font-serif text-3xl">
                       <Truncate address={wallet.address} />
                     </h1>
                   )}
@@ -253,7 +253,7 @@ const Wallet = () => {
                   {claimed && (
                     <>
                       {wallet.walletData[5] && (
-                        <ul className="flex mt-4">
+                        <ul className="flex flex-wrap gap-4 mb-4">
                           {wallet.walletData[5].map((link, key) => {
                             const customIcons = [
                               'opensea',
@@ -266,15 +266,10 @@ const Wallet = () => {
                               return
                             }
                             return (
-                              <li
-                                key={key}
-                                data-type={link[0]}
-                                className={clsx(
-                                  'mx-2 overflow-visible',
-                                  customIcons.includes(link[0]) &&
-                                    '-translate-y-[2px]'
-                                )}>
-                                <a href={link[1]}>
+                              <li key={key} data-type={link[0]}>
+                                <a
+                                  href={link[1]}
+                                  className="flex items-center justify-center w-full h-full">
                                   {link[0] === 'twitter' && <FaTwitter />}
                                   {link[0] === 'instagram' && <FaInstagram />}
                                   {link[0] === 'linkedin' && <FaLinkedin />}
@@ -286,10 +281,11 @@ const Wallet = () => {
                                     <FaGlobeAmericas />
                                   )}
                                   {customIcons.includes(link[0]) && (
-                                    <Image
+                                    <img
                                       src={`/icons/${link[0]}.svg`}
                                       height={link[0] === 'looksrare' ? 20 : 16}
                                       width={link[0] === 'looksrare' ? 20 : 16}
+                                      className="max-w-none"
                                     />
                                   )}
                                 </a>
@@ -299,7 +295,7 @@ const Wallet = () => {
                         </ul>
                       )}
                       {wallet.walletData[3] && (
-                        <p className="mt-12 mb-8 leading-loose">
+                        <p className="mt-4 leading-loose">
                           {wallet.walletData[3]}
                         </p>
                       )}
@@ -329,9 +325,18 @@ const Wallet = () => {
                       id="tabs"
                       name="tabs"
                       className="block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      defaultValue={tabs.find((tab) => tab.current).name}>
+                      defaultValue={tabs.find((tab) => tab.current).name}
+                      onChange={(e) => {
+                        window.location.hash = e.currentTarget.value
+                        setCurrentTab(e.currentTarget.value)
+                      }}>
                       {tabs.map((tab) => (
-                        <option key={tab.name}>{tab.name}</option>
+                        <option
+                          key={tab.name}
+                          value={tab.href}
+                          selected={tab.href === currentTab}>
+                          {tab.name}
+                        </option>
                       ))}
                     </select>
                   </div>
