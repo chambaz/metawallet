@@ -24,24 +24,22 @@ const About: NextPage = () => {
             </>
           </Heading>
         </div>
-        <div className="max-w-5xl px-4 mx-auto mb-40 space-y-8 text-lg leading-loose text-white">
+        <div className="max-w-4xl px-4 mx-auto mb-40 text-lg leading-loose text-center text-white">
           <p>
-            Irure quis eu voluptate sit eu quis nisi. Et duis minim laborum ea.
-            Nulla consequat ea voluptate laborum eiusmod. Est duis eu tempor et
-            ex cillum quis. Fugiat do dolore ipsum et. Qui ex sint amet esse
-            commodo dolor labore enim eiusmod. Veniam esse proident voluptate ex
-            consequat sint reprehenderit mollit tempor reprehenderit. Aliquip
-            aliqua ut dolor duis proident. Aliqua dolore ut aute consequat id.
-            Consequat nisi enim voluptate non quis proident culpa eiusmod veniam
-            nostrud est veniam esse ut. Aute eu cillum ea veniam sunt duis enim.
+            MetaWallet is a wallet explorer and decentralised profile system for
+            Web3. Search for Ethereum wallet addresses, explore the tokens they
+            own, and view recent transaction history. Claim your wallet, verify
+            your ownership, customize your profile, and share with the world.
           </p>
-          <p>
-            Incididunt dolor ex ex nulla laboris nisi. Deserunt esse sint aute
-            Lorem consectetur incididunt. Ea officia dolor eiusmod proident ut
-            dolore. Sint dolore occaecat nisi est fugiat in id laborum tempor
-            irure id adipisicing Lorem. In incididunt ipsum cillum consectetur
-            ullamco deserunt.
-          </p>
+          <h2 className="mt-16 mb-4 text-2xl font-bold">Roadmap</h2>
+          <ul>
+            <li>Add support for Polygon</li>
+            <li>The Graph API</li>
+            <li>"MetaWallet Pass" NFT collection</li>
+            <li>Advanced wallet search</li>
+            <li>Add support for Solana</li>
+            <li>Merge Ethereum / Solana profiles</li>
+          </ul>
         </div>
       </>
     </Layout>
