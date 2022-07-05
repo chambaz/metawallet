@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { Layout } from '../components/layout'
 import { Heading } from '../components/heading'
 import { Search } from '../components/search'
@@ -8,6 +9,11 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <>
+        <Head>
+          <title>
+            Wallet explorer and decentralized profile system for Web3
+          </title>
+        </Head>
         <div className="max-w-5xl px-4 py-16 mx-auto text-center">
           <Heading>
             <>
