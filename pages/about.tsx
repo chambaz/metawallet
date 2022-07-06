@@ -35,7 +35,7 @@ const About: NextPage = () => {
           <ul>
             <li>Add support for Polygon</li>
             <li>The Graph API</li>
-            <li>"MetaWallet Pass" NFT collection</li>
+            <li>&ldquo;MetaWallet Pass&rdquo; NFT collection</li>
             <li>Advanced wallet search</li>
             <li>Add support for Solana</li>
             <li>Merge Ethereum / Solana profiles</li>
