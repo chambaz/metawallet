@@ -29,8 +29,8 @@ export const Nav = () => {
 
   const navItems = [
     {
-      text: 'Explore Wallets',
-      link: '/',
+      text: 'Explore Collections',
+      link: '/explore',
     },
     {
       text: 'About MetaWallet',
