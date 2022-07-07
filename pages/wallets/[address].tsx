@@ -10,7 +10,7 @@ import {
   loggedInState,
   notificationState,
 } from '../../recoil/atoms'
-import { MdVerified } from 'react-icons/md'
+import { MdVerified, MdOutlineOpenInNew } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import {
   FaTwitter,
@@ -483,7 +483,12 @@ const Wallet = () => {
                                   return (
                                     <tr key={index}>
                                       <td className="px-3 py-4">
-                                        <Truncate address={trans.hash} />
+                                        <a
+                                          className="flex items-center text-blue-400"
+                                          href={`https://kovan-optimistic.etherscan.io/tx/${trans.hash}`}>
+                                          <MdOutlineOpenInNew className="mr-1" />
+                                          <Truncate address={trans.hash} />
+                                        </a>
                                       </td>
                                       <td className="px-3 py-4">
                                         <Truncate address={trans.from} />
