@@ -110,9 +110,10 @@ const Wallet = () => {
           message: (
             <a
               className="border-b border-black hover:border-0"
-              href={`https://kovan-optimistic.etherscan.io/tx/${claim.hash}`}
+              href={`https://goerli-optimistic.etherscan.io/tx/${claim.hash}`}
               target="_blank"
-              rel="noreferrer">
+              rel="noreferrer"
+            >
               View on Etherscan
             </a>
           ),
@@ -216,7 +217,8 @@ const Wallet = () => {
         </Head>
         <div
           className="min-h-full mt-40 text-center bg-slate-50"
-          style={{ minHeight: 'calc(100vh - 285px)' }}>
+          style={{ minHeight: 'calc(100vh - 285px)' }}
+        >
           <div className="relative inline-block w-full px-8 pt-8 pb-12 my-8 overflow-hidden text-left text-gray-700 align-bottom transition-all transform -translate-y-40 bg-white rounded-lg shadow-xl max-w-7xl">
             {!wallet.address && (
               <Loader label="Loading wallet" className="my-24" />
@@ -224,7 +226,8 @@ const Wallet = () => {
             {wallet.address == currentAccount && !isClaimed && (
               <button
                 onClick={claimWallet}
-                className="flex items-center mx-auto mt-2 text-lg font-bold text-indigo-500 border-b border-indigo-400">
+                className="flex items-center mx-auto mt-2 text-lg font-bold text-indigo-500 border-b border-indigo-400"
+              >
                 Claim your wallet and customize your profile
               </button>
             )}
@@ -282,7 +285,8 @@ const Wallet = () => {
                                 <li key={key} data-type={link[0]}>
                                   <a
                                     href={link[1]}
-                                    className="flex items-center justify-center w-full h-full">
+                                    className="flex items-center justify-center w-full h-full"
+                                  >
                                     {link[0] === 'twitter' && <FaTwitter />}
                                     {link[0] === 'instagram' && <FaInstagram />}
                                     {link[0] === 'linkedin' && <FaLinkedin />}
@@ -346,12 +350,14 @@ const Wallet = () => {
                         onChange={(e) => {
                           window.location.hash = e.currentTarget.value
                           setCurrentTab(e.currentTarget.value)
-                        }}>
+                        }}
+                      >
                         {tabs.map((tab) => (
                           <option
                             key={tab.name}
                             value={tab.href}
-                            selected={tab.href === currentTab}>
+                            selected={tab.href === currentTab}
+                          >
                             {tab.name}
                           </option>
                         ))}
@@ -371,7 +377,8 @@ const Wallet = () => {
                                   : 'border-gray-200 text-gray-400 hover:text-gray-500 hover:border-gray-300',
                                 'w-1/2 py-4 px-1 text-center border-b-2 font-medium text-base'
                               )}
-                              aria-current={tab.current ? 'page' : undefined}>
+                              aria-current={tab.current ? 'page' : undefined}
+                            >
                               {tab.name}
                             </a>
                           ))}
@@ -382,7 +389,8 @@ const Wallet = () => {
                   <div
                     style={{
                       display: currentTab === '#nfts' ? 'block' : 'none',
-                    }}>
+                    }}
+                  >
                     <div className="grid grid-cols-2 gap-6 mt-8 md:grid-cols-3 lg:grid-cols-4">
                       {wallet?.nfts?.map((nft, index) => {
                         if (!nft || !nft.img) {
@@ -417,7 +425,8 @@ const Wallet = () => {
                         onClick={() => loadMoreNfts()}
                         size="lg"
                         disabled={loadingNfts}
-                        className="mx-auto mt-16">
+                        className="mx-auto mt-16"
+                      >
                         {loadingNfts ? 'Loading...' : 'Load more'}
                       </Button>
                     )}
@@ -425,7 +434,8 @@ const Wallet = () => {
                   <div
                     style={{
                       display: currentTab === '#tokens' ? 'block' : 'none',
-                    }}>
+                    }}
+                  >
                     <ul className="text-left ">
                       {wallet?.tokens?.map((token, index) => {
                         return (
@@ -453,7 +463,8 @@ const Wallet = () => {
                     style={{
                       display:
                         currentTab === '#transactions' ? 'block' : 'none',
-                    }}>
+                    }}
+                  >
                     <div className="flex flex-col mt-8">
                       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -485,7 +496,8 @@ const Wallet = () => {
                                       <td className="px-3 py-4">
                                         <a
                                           className="flex items-center text-blue-400"
-                                          href={`https://kovan-optimistic.etherscan.io/tx/${trans.hash}`}>
+                                          href={`https://goerli-optimistic.etherscan.io/tx/${trans.hash}`}
+                                        >
                                           <MdOutlineOpenInNew className="mr-1" />
                                           <Truncate address={trans.hash} />
                                         </a>

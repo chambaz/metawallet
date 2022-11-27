@@ -26,10 +26,10 @@ export const NetworkModal = ({ show, onClose }: Props) => {
       method: 'wallet_addEthereumChain',
       params: [
         {
-          chainId: '0x45',
-          chainName: 'Optimism Kovan',
-          rpcUrls: ['https://kovan.optimism.io'],
-          blockExplorerUrls: ['https://kovan-optimistic.etherscan.io/'],
+          chainId: '0x1a4',
+          chainName: 'Optimism Goerli',
+          rpcUrls: ['https://goerli.optimism.io'],
+          blockExplorerUrls: ['https://goerli-optimism.etherscan.io'],
         },
       ],
     })
@@ -49,7 +49,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
           enterTo="opacity-100"
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
-          leaveTo="opacity-0">
+          leaveTo="opacity-0"
+        >
           <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
         </Transition.Child>
 
@@ -62,7 +63,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
               enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
               <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-xl sm:w-full sm:p-6">
                 <div className="flex flex-col items-center justify-center px-8 py-4 space-y-6 text-center md:px-12">
                   <BiErrorCircle className="p-2 text-6xl text-red-400 bg-red-100 rounded-full" />
@@ -72,7 +74,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                       className="text-red-600 transition border-b border-red-600 outline-none hover:border-transparent"
                       href="https://www.optimism.io/"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       Optimism
                     </a>
                     , an Ethereum L2 scaling solution, so that we can provide a
@@ -88,7 +91,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                       className="transition border-b border-black hover:border-transparent"
                       href="https://community.optimism.io/docs/useful-tools/faucets/"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       from the faucet
                     </a>{' '}
                     or{' '}
@@ -96,7 +100,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                       className="transition border-b border-black hover:border-transparent"
                       href="https://twitter.com/chambaz"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       message @chambaz
                     </a>{' '}
                     for an airdrop.
@@ -106,7 +111,8 @@ export const NetworkModal = ({ show, onClose }: Props) => {
                       className="text-sm text-red-600 transition border-b border-red-600 hover:border-transparent"
                       href="https://gateway.optimism.io/"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       Bridge funds to Optimism
                     </a>
                   </p>

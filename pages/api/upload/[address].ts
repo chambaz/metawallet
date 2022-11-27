@@ -35,7 +35,7 @@ const Upload = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     })
 
     res.json({
-      url: `https://metawallet.mypinata.cloud/ipfs/${pin.IpfsHash}`,
+      url: `https://spacecubes.mypinata.cloud/ipfs/${pin.IpfsHash}`,
     })
   })
 }

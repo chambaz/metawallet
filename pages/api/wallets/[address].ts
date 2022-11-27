@@ -64,7 +64,7 @@ const Address = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     process.env.ALCHEMY_API_URL_MAINNET
   )
   const optimismProvider = new ethers.providers.JsonRpcProvider(
-    process.env.ALCHEMY_API_URL_KOVAN
+    process.env.ALCHEMY_API_URL_GOERLI
     // 'http://localhost:8545'
   )
 

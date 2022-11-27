@@ -114,8 +114,8 @@ module.exports = {
       url: process.env.ALCHEMY_API_URL_OPTIMISM,
       accounts: [process.env.PRIVATE_KEY],
     },
-    kovan: {
-      url: process.env.ALCHEMY_API_URL_KOVAN,
+    goerli: {
+      url: process.env.ALCHEMY_API_URL_GOERLI,
       accounts: [process.env.PRIVATE_KEY],
     },
   },
